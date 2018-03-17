@@ -40,6 +40,8 @@ var scrape = function() {
         });
         // log the results 
         console.log(results);
+
+        return results;
     })
 }
 // export the scrape function

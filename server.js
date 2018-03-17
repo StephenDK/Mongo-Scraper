@@ -1,5 +1,3 @@
-import { Promise } from 'mongoose';
-
 // Require our Dependencies
 var express = require('express');
 var mongoose = require('mongoose');
@@ -27,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // have all requests go through our routes
-app.use(routes);
+// app.use(routes);
 
 // connection to mongo
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
