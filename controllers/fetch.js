@@ -4,10 +4,13 @@
 var db = require("../models");
 var scrape = require("../scripts/scrape");
 
+
+console.log("------------");
 module.exports = {
     scrapeHeadlines: function(req, res) {
         // scrape gizmodo
-        return scrape()
+        console.log('ABOUT TO SCRAPE')
+        scrape()
         .then(function(articles) {
             // insert articles into db
             return db.Headline.create(articles);

@@ -1,48 +1,49 @@
-/*
- This script will run the scrape function
-that grabs website data.
-*/
+var axios = require("axios");
+var cheerio = require("cheerio");
 
-// Dependencies
-var request = require('request');
-var cheerio = require('cheerio');
-
-// message to show scrape working
-console.log("\n***********************\n" + 
-"Grabing every thread name and link\n" +
-" from the reddit webdev board\n" 
-+ "***************************");
-
+// This function will scrape NY times
 var scrape = function() {
+  // Scrape the NYTimes website
+  return axios.get("http://www.nytimes.com").then(function(res) {
+    var $ = cheerio.load(res.data);
+    // Make an empty array to hold data
+    var articles = [];
 
-    request("https://gizmodo.com/", function(error, response, html) {
+    // Loop through each NY time entry
+    $(".theme-summary").each(function(i, element) {
+      
+      // Headline
+      var head = $(this)
+        .children(".story-heading")
+        .text()
+        .trim();
 
-    // load the html into cheerio
-    var $ = cheerio.load(html);
+      // URL
+      var url = $(this)
+        .children(".story-heading")
+        .children("a")
+        .attr("href");
 
-    // empty array to hold the data
-    var results = [];
+      // Summary
+      var sum = $(this)
+        .children(".summary")
+        .text()
+        .trim();
 
-    // find each p-tag with the headline "class" using cheerio
-        $("p.headline").each(function(i, element) {
-            
-            // save the title into a variable
-            var title = $(element).text();
+        // Create an object to push to the articles array
 
-            // In the currently selected element grab the href 
-            var link = $(element).children().attr("href");
+        var dataToAdd = {
+          headline: headNeat,
+          summary: sumNeat,
+          url: url
+        };
 
-            // Save the results into an object and push into results array
-            results.push({
-                title: title,
-                link: link
-            });
-        });
-        // log the results 
-        console.log(results);
+        articles.push(dataToAdd);
+      }
+    });
+    return articles;
+  });
+};
 
-        return results;
-    })
-}
-// export the scrape function
+// Export the function, so other files in our backend can use it
 module.exports = scrape;

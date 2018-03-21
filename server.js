@@ -11,7 +11,7 @@ var PORT = process.env.PORT || 3000;
 var app = express();
 
 // Require routes 
-// var routes = require('./routes');
+var routes = require('./routes');
 
 // Set the public directory as static
 app.use(express.static('public'));
@@ -25,14 +25,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // have all requests go through our routes
-// app.use(routes);
+app.use(routes);
 
 // connection to mongo
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI, {
-    useMongoClient: true
 });
 
 app.listen(PORT, function() {
